@@ -56,8 +56,8 @@ a {
 }
 
 .react-calendar__tile--now {
-  background-color: rgba(61, 251, 74, 0.663) !important; 
-  color: black !important; 
+  background-color: rgba(61, 251, 74, 0.2) !important; 
+  color: rgb(0, 176, 44) !important; 
 }
 
 @media (prefers-color-scheme: dark){

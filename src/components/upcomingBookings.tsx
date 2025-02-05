@@ -18,8 +18,17 @@ export default function UpcomingBookings() {
     async function fetchBookings() {
       const res = await fetch("/api/bookings");
       const data = await res.json();
-      console.log("Fetched Bookings:", data);
+      console.log("fetched bookings:", data);
       setBookings(data);
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate()-1);
+      const formateador = (date: Date) => date.toISOString().split("T")[0];
+      const filterBook = data.filter((booking:Booking) => {
+        const bookingDate = formateador(new Date(booking.date));
+        return bookingDate >= formateador(yesterday);
+      })
+      setBookings(filterBook);
     }
     fetchBookings();
   }, []);
