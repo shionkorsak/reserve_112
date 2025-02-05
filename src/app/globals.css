@@ -7,6 +7,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --hover-dark: #00bcd4;
   }
 }
 
@@ -38,5 +39,35 @@ a {
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+.react-calendar__tile.booked {
+  background-color: #db2f1fc3 !important;
+  color: white !important;
+}
+
+.react-calendar{
+  font-family: var(--font-geist-sans) !important;
+  border-color: transparent !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  
+}
+
+.react-calendar__tile--now {
+  background-color: rgba(61, 251, 74, 0.663) !important; 
+  color: black !important; 
+}
+
+@media (prefers-color-scheme: dark){
+  .react-calendar__tile:hover {
+    background-color: rgb(230, 230, 230, 0.6) !important;
+    color: #000 !important; 
+  }
+
+  .react-calendar__navigation button:hover{
+    background-color: rgb(230, 230, 230, 0.6) !important;
+    color: #000 !important;
   }
 }
