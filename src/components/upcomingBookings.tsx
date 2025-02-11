@@ -1,6 +1,5 @@
 "use client";
 
-import { time } from "console";
 import { useEffect, useState } from "react";
 
 interface Booking {
@@ -20,37 +19,29 @@ export default function UpcomingBookings() {
       const data = await res.json();
       console.log("fetched bookings:", data);
       setBookings(data);
-      const today = new Date();
-      const yesterday = new Date();
-      yesterday.setDate(today.getDate()-1);
-      const formateador = (date: Date) => date.toISOString().split("T")[0];
-      const filterBook = data.filter((booking:Booking) => {
-        const bookingDate = formateador(new Date(booking.date));
-        return bookingDate >= formateador(yesterday);
-      })
-      setBookings(filterBook);
     }
     fetchBookings();
   }, []);
 
   const formatDate = (date: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    return new Date(date).toLocaleDateString("en-US", options);
+    const [year, month, day] = date.split("T")[0].split("-");
+  
+    const months: { [key: string]: string } = {
+      "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun",
+      "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
+    }; // bro i did not use any js functions because it keeps messing up bc of the timezone, that shaved YEARS off my life
+  
+    return `${months[month]} ${day}, ${year}`;
   };
 
   const formatearTime = (timeArray: string[]) => {
     if (timeArray.length > 0){
       const firstTime = timeArray[0];
       const lastTime = timeArray[timeArray.length - 1];
-
       return `${firstTime} to ${lastTime}`;
     }
     return "";
-  }
+  };
 
   return (
     <section>
@@ -58,11 +49,10 @@ export default function UpcomingBookings() {
       <ul>
         {bookings.map((booking) => (
           <li key={booking.id}>
-            {booking.name} - {formatDate(booking.date)} - {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])} -
-            {booking.amount} people
+            {booking.name} - {formatDate(booking.date)} - {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])} -{" "}
+            {booking.amount} people!
           </li>
         ))}
       </ul>
     </section>
-  );
-}
+  );}

@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
+  //console.log("GET/api/")
   await connectDB();
   const bookings = await Booking.find();
+  //console.log("bookings GET: ", bookings);
   return NextResponse.json(bookings);
 }
