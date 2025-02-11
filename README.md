@@ -25,12 +25,12 @@ This is a booking system built with Next.js (app router) and MongoDB for managin
 ```
 ## Installation and Setup
 0. Ensure you have node.js installed
-2. Clone the repo and install dependencies
+1. Clone the repo and install dependencies
 ```
 npm i
 ```
-3. Create a `.env.local` file and paste the MONGO_URI
-4. Run the develpment server
+2. Create a `.env.local` file and paste the MONGO_URI
+3. Run the develpment server
 ```
 npm run dev
 ```
