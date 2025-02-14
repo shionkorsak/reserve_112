@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function AdminBookingForm() {
     const [formData, setFormData] = useState({
-        name: '',
+        name: 'IBP Office',
         email: '',
         date: '',
         time: [] as string[],
@@ -81,10 +81,7 @@ export default function AdminBookingForm() {
       };
     
       return (
-        <form onSubmit={handleSubmit}>
-          <label>Name</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-              
+        <form onSubmit={handleSubmit}>        
           <label>Email</label>
           <input type="email" name="email" value={formData.email} onChange={handleChange} required />
     

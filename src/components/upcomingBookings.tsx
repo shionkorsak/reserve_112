@@ -17,7 +17,7 @@ export default function UpcomingBookings() {
     async function fetchBookings() {
       const res = await fetch("/api/bookings");
       const data = await res.json();
-      console.log("fetched bookings:", data);
+      //console.log("fetched bookings:", data);
       setBookings(data);
     }
     fetchBookings();

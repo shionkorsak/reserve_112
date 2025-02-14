@@ -4,6 +4,7 @@ import BookingForm from "@/components/bookingForm";
 import Footer from "@/components/footer";
 import UpcomingBookings from "@/components/upcomingBookings";
 import BookingCalendar from "@/components/calendar";
+import RoomStatus from "@/components/available";
 
 export default function Home() {
   return (
@@ -50,6 +51,7 @@ export default function Home() {
           </a>
         </div>
         <div>
+          <RoomStatus/>
           <h1>booking form</h1>
           <BookingForm/>
         </div>
