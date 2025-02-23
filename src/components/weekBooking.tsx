@@ -58,6 +58,7 @@ export default function WeeklySchedule() {
   return (
     <section>
       <div className={styles.calendar}>
+        <h2>Weekly Schedule</h2><br/>
         <Calendar
           localizer={localizer}
           events={events}

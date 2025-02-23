@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import styles from "@/app/page.module.css";
 
 export default function AdminBookingForm() {
     const [formData, setFormData] = useState({
@@ -81,7 +82,8 @@ export default function AdminBookingForm() {
       };
     
       return (
-        <form onSubmit={handleSubmit}>        
+        <form onSubmit={handleSubmit}>
+          <h1>Admin Booking Form</h1>        
           <label>Email</label>
           <input type="email" name="email" value={formData.email} onChange={handleChange} required />
     
@@ -89,9 +91,10 @@ export default function AdminBookingForm() {
           <input type="date" name="date" value={formData.date} onChange={handleChange} required />
     
           <label>Time</label>
-          <div>
+          <div className={styles.timeContainer}>
+          <div className={styles.timeGrid}>
             {timesList.map((time, index) => (
-              <div key={index}>
+              <div key={index} className={styles.timeSlot}>
                 <input
                   type="checkbox"
                   name="time"
@@ -111,11 +114,12 @@ export default function AdminBookingForm() {
             </button>
     
           </div>
+          </div>
     
           <label>Total number of people expected to attend</label>
           <input type="number" name="amount" value={formData.amount} onChange={handleChange} required />
     
-          <button type="submit">Submit</button>
+          <button type="submit" className={styles.buttonSec}>Submit</button>
         </form>
       );
     }    

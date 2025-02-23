@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import styles from "@/app/page.module.css";
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -19,14 +20,13 @@ export default function BookingForm() {
     while (start <= end) {
       const hour = start < 10 ? `0${start}:00` : `${start}:00`;
       const halfHour = start < 10 ? `0${start}:30` : `${start}:30`;
-      if(start==22){
+      if (start == 22) {
         times.push(hour);
       } else {
         times.push(hour, halfHour);
       }
       start++;
     }
-
     return times;
   };
 
@@ -40,14 +40,12 @@ export default function BookingForm() {
 
       if (checked) {
         newTimeSelection.push(value);
-
         const sortedSelection = newTimeSelection
           .map((t) => timesList.indexOf(t))
           .sort((a, b) => a - b);
-        
+
         const firstIndex = sortedSelection[0];
         const lastIndex = sortedSelection[sortedSelection.length - 1];
-
         newTimeSelection = timesList.slice(firstIndex, lastIndex + 1);
 
         if (newTimeSelection.length > 9) {
@@ -64,8 +62,16 @@ export default function BookingForm() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  
+  const handleOpenPopup = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowPopup(true);
+  };
+
+  const handleConfirmBooking = async () => {
+    if (!isChecked) return;
 
     const response = await fetch('/api/book', {
       method: 'POST',
@@ -76,62 +82,134 @@ export default function BookingForm() {
     });
 
     const data = await response.json();
+
     if (response.ok) {
-      alert('Booking successful!');
+      alert("Booking Successful!");
       setFormData({ name: '', email: '', date: '', time: [], amount: '', id: '' });
+      setShowPopup(false); 
     } else {
       alert('Error: ' + data.message);
+      setShowPopup(false); 
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Name</label>
-      <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+    <>
+      <form onSubmit={handleOpenPopup}>
+        <h1>Booking Form</h1>
+        <label>Name</label>
+        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
 
-      <label>Student ID</label>
-      <input type="text" name="id" value={formData.id} onChange={handleChange} required />
+        <label>Student ID</label>
+        <input type="text" name="id" value={formData.id} onChange={handleChange} required />
 
-      <label>Email</label>
-      <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+        <label>Email</label>
+        <input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
-      <label>Date</label>
-      <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+        <label>Date</label>
+        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
 
-      <label>Time</label>
-      <div>
-        {timesList.map((time, index) => (
-          <div key={index}>
-            <input
-              type="checkbox"
-              name="time"
-              value={time}
-              checked={formData.time.includes(time)}
-              onChange={handleChange}
-              disabled={formData.time.length >= 9 && !formData.time.includes(time)} 
-            />
-            <label>{time}</label>
+        <label>Time</label>
+        <div className={styles.timeContainer}>
+          <div className={styles.timeGrid}>
+            {timesList.map((time, index) => (
+              <div key={index} className={styles.timeSlot}>
+                <input
+                  type="checkbox"
+                  name="time"
+                  value={time}
+                  checked={formData.time.includes(time)}
+                  onChange={handleChange}
+                  disabled={formData.time.length >= 9 && !formData.time.includes(time)} 
+                />
+                <label>{time}</label>
+              </div>
+            ))}
+
+            <button type="button" onClick={() => setFormData({ ...formData, time: [] })}>
+              Unselect All
+            </button>
           </div>
-        ))}
+        </div>
 
-        <button
-          type="button"
-          onClick={() => setFormData({ ...formData, time: [] })}
-        >
-          Unselect All
-        </button>
+        <label>Total number of people expected to attend</label>
+        <input type="number" name="amount" value={formData.amount} onChange={handleChange} required />
+        <button type="submit" className={styles.buttonSec}>Submit</button>
+      </form>
 
-      </div>
+      {showPopup && (
+        <div className={styles.popupOverlay}>
+          <div className={styles.popupContent}>
+            <h2>Booking Confirmation</h2>
+            <p>By clicking the box below, you confirm that you have read and agree with our </p>
+            <a href="https://docs.google.com/document/d/1io15-ZhguvW2wv40htRJ5id0cydjHURrhhXLa0Pej7I/edit?usp=sharing"
+              target="_blank" rel="noopener nonreferrer" style={{ color: "blue", textDecoration: "underline" }}>IBP Room 112 Rules and Regulations.</a>
+            <label style={{padding: "5px"}}>
+              <input type="checkbox" onChange={(e) => setIsChecked(e.target.checked)} style={{padding: "10px"}}/>
+               I have read and agree with the Rules and Regulations.
+            </label>
+            <button onClick={handleConfirmBooking} disabled={!isChecked}>
+              Confirm
+            </button>
+          </div>
+        </div>
+      )}
 
-      <label>Total number of people expected to attend</label>
-      <input type="number" name="amount" value={formData.amount} onChange={handleChange} required />
+      <style>
+        {`
+          .${styles.popupOverlay} { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          
+          .${styles.popupContent} { 
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+          }
 
-      <button type="submit">Submit</button>
-    </form>
+          .${styles.popupContent} h2 {
+            margin: 0 0 10px;
+          }
+
+          .${styles.popupContent} label { 
+            display: block;
+            margin: 10px 0;
+          }
+
+          .${styles.popupContent} button { 
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+          }
+
+          .${styles.popupContent} button:disabled { 
+            background: #ccc;
+            cursor: not-allowed;
+          }
+
+          .${styles.popupContent} input[type="checkbox"] {
+            width: 15px; 
+            height: 15px;
+            margin-right: 5px; 
+          }
+        `}
+      </style>
+    </>
   );
 }
-
-
-
-
-

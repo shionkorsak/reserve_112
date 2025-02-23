@@ -19,7 +19,6 @@ export default function Home() {
           <UpcomingBookings/>
         </div>
         <div>
-          <h2>Weekly Schedule</h2>
           <WeeklyBookings/>
         </div>
         </div>

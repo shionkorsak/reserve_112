@@ -104,6 +104,11 @@
   .columns {
     flex-direction: column;
   }
+
+  .timeGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
 }
 
 .ctas {
@@ -169,7 +174,7 @@ a.secondary {
     border-color: transparent;
   }
 
-  a.secondary:hover {
+  a.secondary:hover, .buttonSec:hover {
     background: var(--button-secondary-hover);
     border-color: transparent;
   }
@@ -282,8 +287,21 @@ a.secondary {
   transition: background-color 0.2s;
 }
 
-.button:hover {
-  background-color: #215ac0;
+.buttonSec {
+  background-color: transparent;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-width: 2px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-color: var(--gray-alpha-200);
+}
+
+.buttonSec:hover {
+  background-color: var(--gray-alpha-200);
 }
 
 .logo {
@@ -312,4 +330,120 @@ a.secondary {
 
 .rbc-timeslot-group {
   min-width: auto;
+}
+
+.timeContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  justify-content: center;
+  align-items: center;
+}
+
+.timeSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  text-align: center;
+}
+
+.time-slot input {
+  cursor: pointer;
+}
+
+@media (max-width: 400) {
+  .timeGrid {
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .timeSlot {
+    width: 60px;
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .timeGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .page{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bookings{
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+.popupOverlay {
+  position: fixed; /* Makes it cover the whole screen */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures it appears on top */
+}
+
+.popupContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.popupContent h2 {
+  margin: 0 0 10px;
+}
+
+.popupContent label { 
+  display: block;
+  margin: 10px 0;
+}
+
+.popupContent button { 
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.popupContent button:disabled { 
+  background: #ccc;
+  cursor: not-allowed;
 }
