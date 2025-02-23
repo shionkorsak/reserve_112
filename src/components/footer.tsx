@@ -1,4 +1,4 @@
-import Image from "next/image";
+//import Image from "next/image";
 import styles from "@/app/page.module.css";
 
 export default function Footer() {
@@ -10,12 +10,12 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                <Image
-                    className={styles.logo}
+                <img
                     src="/instagram.svg"
                     alt="Instagram icon"
                     width={16}
                     height={16}
+                    className={styles.logo}
                 />
                 </a>
                 <a
@@ -23,12 +23,12 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                <Image
-                    className={styles.logo}
+                <img
                     src="/at.svg"
                     alt="Window icon"
-                    width={20}
+                    width={17}
                     height={16}
+                    className={styles.logo}
                 />
                 </a>
             </footer>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import styles from "@/app/page.module.css";
 
 export default function RoomStatus() {
   const [isBooked, setIsBooked] = useState(false);
@@ -10,7 +11,7 @@ export default function RoomStatus() {
       const res = await fetch("/api/bookings");
       const data = await res.json();
 
-      console.log("bookings from api:", data);
+      //console.log("bookings from api:", data);
 
       const now = new Date();
       const nowHours = now.getHours();
@@ -36,7 +37,7 @@ export default function RoomStatus() {
         });
       });
 
-      console.log("am i bookde rn?", isRoomBooked);
+      //console.log("am i bookde rn?", isRoomBooked);
 
       setIsBooked(isRoomBooked);
     }
@@ -47,12 +48,13 @@ export default function RoomStatus() {
   }, []);
 
   return (
-    <button
-      className={`px-4 py-2 text-white rounded ${
-        isBooked ? "bg-red-500" : "bg-green-500"
-      }`}
-    >
-      Room Status: {isBooked ? "Unavailable" : "Available"}
-    </button>
+    <div>
+      <h2>
+      Room Status:{" "}
+      <span style={{color: isBooked ? "red" : "green", fontWeight: "bold"}}>
+        {isBooked ? "Unavailable" : "Available"}
+      </span>
+      </h2>
+    </div>
   );
 }

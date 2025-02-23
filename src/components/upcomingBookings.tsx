@@ -45,12 +45,10 @@ export default function UpcomingBookings() {
 
   return (
     <section>
-      <h1>Upcoming Bookings</h1>
       <ul>
         {bookings.map((booking) => (
           <li key={booking.id}>
-            {booking.name} - {formatDate(booking.date)} - {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])} -{" "}
-            {booking.amount} people!
+            {booking.name} - {formatDate(booking.date)} - {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])}
           </li>
         ))}
       </ul>
