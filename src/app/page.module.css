@@ -107,6 +107,8 @@
   .columns {
     display: block;
     gap: 0;
+    overflow: hidden !important;
+    touch-action: none;
   }
 
   .columns > div {
@@ -118,6 +120,8 @@
   .main {
     height: auto !important; 
     overflow-y: visible !important;
+    overflow: hidden !important;
+    touch-action: none; 
   }
 }
 

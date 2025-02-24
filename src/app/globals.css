@@ -120,6 +120,15 @@ img {
   .rbc-time-gutter {
     font-size: 10px !important;
   }
+
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 form {
