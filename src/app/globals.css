@@ -139,3 +139,9 @@ input:focus {
   border-color: #007bff;
   outline: none;
 }
+
+@media (max-width: 400px) {
+  li {
+    list-style-type: none; 
+  }
+}
