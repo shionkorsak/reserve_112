@@ -103,6 +103,24 @@
   gap: 20px;
 }
 
+@media (max-width: 400px) {
+  .columns {
+    display: block;
+    gap: 0;
+  }
+
+  .columns > div {
+    flex: none !important;
+    width: 100% !important; 
+    overflow: visible !important; 
+  }
+
+  .main {
+    height: auto !important; 
+    overflow-y: visible !important;
+  }
+}
+
 @media (max-width: 888px) {
   .columns {
     flex-direction: column;
