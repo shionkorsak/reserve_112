@@ -104,23 +104,7 @@ img {
   padding-left: 5px;
 }
 
-@media (max-width: 400px){
-  .rbc-calendar {
-    width: 100% !important;
-    font-size: 12px !important;  
-      transform: scale(0.5) !important;
-      transform-origin: top left !important;
-    touch-action: auto !important;
-  }
-
-  .rbc-event {
-    font-size: 10px !important;
-  }
-
-  .rbc-time-gutter {
-    font-size: 10px !important;
-  }
-
+@media (max-width: 500px){
   * {
     -ms-overflow-style: none;
     scrollbar-width: none; 
@@ -152,7 +136,7 @@ input:focus {
   outline: none;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   li {
     list-style-type: none; 
   }

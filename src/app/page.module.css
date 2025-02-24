@@ -14,7 +14,6 @@
   justify-items:auto;
   min-height: 100svh;
   padding: 50px 170px;
-  padding-top: 50px;
   box-sizing: border-box;
   gap: 64px;
   font-family: var(--font-geist-sans);
@@ -103,31 +102,51 @@
   gap: 20px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 695px) {
   .columns {
     display: block;
     gap: 0;
     overflow: hidden !important;
-    touch-action: none;
   }
 
   .columns > div {
     flex: none !important;
     width: 100% !important; 
-    overflow: visible !important; 
   }
 
   .main {
-    height: auto !important; 
-    overflow-y: visible !important;
-    overflow: hidden !important;
-    touch-action: none; 
+    height: 100vh !important; 
+    overflow-y: scroll !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
 @media (max-width: 888px) {
   .columns {
     flex-direction: column;
+    display: block;
+    gap: 0;
+    overflow: hidden !important;
+  }
+
+  .columns > div {
+    flex: none !important;
+    width: 100% !important;
+  }
+
+  .main {
+    height: 100vh !important;
+    overflow-y: scroll !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .page {
+    padding: 32px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
   .timeGrid {
@@ -211,11 +230,10 @@ a.secondary {
   */
 }
 
-@media (max-width: 400px) {
+@media (max-width: 695px) {
   .page {
     padding: 32px;
     /*padding-bottom: 80px;*/
-    padding-top: 80px;
   }
 
   .main {
@@ -251,10 +269,10 @@ a.secondary {
   }
 
   .header {
-    flex-direction: column;
     align-items: center;
     padding: 15px;
     text-align: center;
+    justify-content: space-between;
   }
 
   .logoContainer {
@@ -265,6 +283,16 @@ a.secondary {
     margin-top: 10px;
     width: 100%;
   }
+}
+
+@media (max-width: 399px){
+    .header {
+      flex-direction: column;
+    }
+
+    .page {
+      padding-top: 80px;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -394,7 +422,7 @@ a.secondary {
   cursor: pointer;
 }
 
-@media (max-width: 400) {
+@media (max-width: 695px) {
   .timeGrid {
     grid-template-columns: repeat(3, 1fr); 
     gap: 6px;

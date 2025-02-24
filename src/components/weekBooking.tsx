@@ -21,7 +21,7 @@ export default function WeeklySchedule() {
   
   useEffect(() => {
     const checkSize = () => {
-      setIsMobile(window.innerWidth<=529)
+      setIsMobile(window.innerWidth<=749)
     };
     checkSize();
     window.addEventListener("resize", checkSize);
