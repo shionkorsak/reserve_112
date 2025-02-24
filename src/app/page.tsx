@@ -1,4 +1,4 @@
-import Image from "next/image";
+//import Image from "next/image";
 import styles from "./page.module.css";
 //import BookingForm from "@/components/bookingForm";
 import Footer from "@/components/footer";

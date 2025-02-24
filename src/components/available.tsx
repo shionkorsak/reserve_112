@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "@/app/page.module.css";
+//import styles from "@/app/page.module.css";
 
 export default function RoomStatus() {
   const [isBooked, setIsBooked] = useState(false);
@@ -49,11 +49,12 @@ export default function RoomStatus() {
 
   return (
     <div>
-      <h2>
+      <h2><code>
       Room Status:{" "}
-      <span style={{color: isBooked ? "red" : "green", fontWeight: "bold"}}>
+      <span style={{color: isBooked ? "red" : "green"}}>
         {isBooked ? "Unavailable" : "Available"}
       </span>
+      </code>
       </h2>
     </div>
   );
