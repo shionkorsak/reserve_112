@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 
 export default function Book(){
     return(
-        <div className={styles.bookings}>
+        <div className={styles.page}>
             <main className={styles.main}>
                 <AdminBookingForm />
             </main>

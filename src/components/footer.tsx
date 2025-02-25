@@ -1,10 +1,12 @@
 //import Image from "next/image";
 import styles from "@/app/page.module.css";
+import Link from "next/link";
 
 export default function Footer() {
     return (
         <footer className={styles.footer}>
-                <a> If something goes wrong, contact us: </a>
+                <div className={styles.contact}>
+                <p>If something goes wrong, contact us:</p>
                 <a
                 href="https://www.instagram.com/nthu_ibpsa/"
                 target="_blank"
@@ -31,6 +33,7 @@ export default function Footer() {
                     className={styles.logo}
                 />
                 </a>
+                </div>
             </footer>
     )
 }

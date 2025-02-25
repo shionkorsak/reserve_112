@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import styles from "@/app/page.module.css";
 
 interface Booking {
   id: string;
@@ -44,13 +45,11 @@ export default function UpcomingBookings() {
   };
 
   return (
-    <section>
-      <ul>
+      <ul className={styles.bookingf}>
         {bookings.map((booking) => (
           <li key={booking.id}>
             {booking.name} - {formatDate(booking.date)} - {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])}
           </li>
         ))}
       </ul>
-    </section>
   );}

@@ -1,6 +1,7 @@
 //import Image from "next/image";
 import styles from "./page.module.css";
 //import BookingForm from "@/components/bookingForm";
+import Link from "next/link";
 import Footer from "@/components/footer";
 import UpcomingBookings from "@/components/upcomingBookings";
 import BookingCalendar from "@/components/calendar";
