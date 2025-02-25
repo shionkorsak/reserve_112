@@ -111,7 +111,19 @@ export default function BookingForm() {
         <input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
         <label>Date</label>
-        <input type="date" name="date" value={formData.date} min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} onChange={handleChange} required />
+        <input type="date" name="date" value={formData.date} min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} 
+          onChange={(e) => {
+            const selectedDate = e.target.value;
+            const minDate = new Date(Date.now() + 86400000);
+            if(new Date(selectedDate) < minDate){
+              alert("Reservations must be made at least 24 hours before the booking time slot.");
+              return;
+            }
+            handleChange(e);
+            }
+          } 
+          
+        required />
 
         <label>Time</label>
         <div className={styles.timeContainer}>
