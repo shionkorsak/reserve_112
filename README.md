@@ -15,12 +15,15 @@ This is a booking system built with Next.js (app router) and MongoDB for managin
   ├── api
   │   ├── book
   │   │   ├── route.ts  (POST req for new booking)
-  │   ├── bookings.tsx  (fetches and displays bookings)
+  │   ├── bookings
+  │   │   ├── route.ts (fetches and displays bookings)
+  ├── page.tsx (main page)
   ├── book
   │   ├── page.tsx
   ├── components
   │   ├── BookingCalendar.tsx  (displays booked dates)
   │   ├── UpcomingBookings.tsx (lists upcoming reservations)
+  │     ... more components, incluiding header and footer
 
 ```
 ## Installation and Setup
