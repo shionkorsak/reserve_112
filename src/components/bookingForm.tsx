@@ -115,15 +115,13 @@ export default function BookingForm() {
           onChange={(e) => {
             const selectedDate = e.target.value;
             const minDate = new Date(Date.now() + 86400000);
-            if(selectedDate===formData.date) return;
-            if(new Date(selectedDate) < minDate){
+            if (!formData.date || new Date(selectedDate) >= minDate) {
+              handleChange(e);
+            } else {
               alert("Reservations must be made at least 24 hours before the booking time slot.");
-              return;
-            }
-            handleChange(e);
             }
           } 
-          
+        } 
         required />
 
         <label>Time</label>
