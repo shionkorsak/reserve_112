@@ -48,7 +48,9 @@ export default function UpcomingBookings() {
       <ul className={styles.bookingf}>
         {bookings.map((booking) => (
           <li key={booking.id}>
-            {booking.name} - {formatDate(booking.date)} - {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])}
+            {booking.name} - {formatDate(booking.date)} <br/> 
+            <code style={{color: "#6395ee"}}> {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])}
+            </code>
           </li>
         ))}
       </ul>

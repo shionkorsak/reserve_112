@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from "@/app/page.module.css";
 
 export default function BookingForm() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -87,6 +90,7 @@ export default function BookingForm() {
       alert("Booking Successful!");
       setFormData({ name: '', email: '', date: '', time: [], amount: '', id: '' });
       setShowPopup(false); 
+      router.push('/');
     } else {
       alert('Error: ' + data.message);
       setShowPopup(false); 
@@ -107,7 +111,7 @@ export default function BookingForm() {
         <input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
         <label>Date</label>
-        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+        <input type="date" name="date" value={formData.date} min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} onChange={handleChange} required />
 
         <label>Time</label>
         <div className={styles.timeContainer}>
@@ -133,7 +137,7 @@ export default function BookingForm() {
         </div>
 
         <label>Total number of people expected to attend</label>
-        <input type="number" name="amount" value={formData.amount} onChange={handleChange} required />
+        <input type="number" name="amount" value={formData.amount} onChange={handleChange} min="7" required />
         <button type="submit" className={styles.buttonSec}>Submit</button>
       </form>
 
@@ -154,62 +158,6 @@ export default function BookingForm() {
           </div>
         </div>
       )}
-
-      <style>
-        {`
-          .${styles.popupOverlay} { 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-          
-          .${styles.popupContent} { 
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-          }
-
-          .${styles.popupContent} h2 {
-            margin: 0 0 10px;
-          }
-
-          .${styles.popupContent} label { 
-            display: block;
-            margin: 10px 0;
-          }
-
-          .${styles.popupContent} button { 
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-          }
-
-          .${styles.popupContent} button:disabled { 
-            background: #ccc;
-            cursor: not-allowed;
-          }
-
-          .${styles.popupContent} input[type="checkbox"] {
-            width: 15px; 
-            height: 15px;
-            margin-right: 5px; 
-          }
-        `}
-      </style>
     </>
   );
 }

@@ -29,6 +29,10 @@
     --button-primary-hover: #ccc;
     --button-secondary-hover: #1a1a1a;
   }
+
+  .buttonSec {
+    color: white !important;
+  }
 }
 
 .main {
@@ -63,6 +67,7 @@
   padding: 2px 4px;
   border-radius: 4px;
   font-weight: 600;
+  line-height: 45px;
 }
 
 .columns {
@@ -495,4 +500,62 @@ a.secondary {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.popupOverlay { 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupContent { 
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.popupContent h2 {
+  margin: 0 0 10px;
+}
+
+.popupContent label { 
+  display: block;
+  margin: 10px 0;
+}
+
+.popupContent button { 
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.popupContent button:disabled { 
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.popupContent input[type="checkbox"] {
+  width: 15px; 
+  height: 15px;
+  margin-right: 5px; 
+}
+
+@media (prefers-color-scheme: dark){
+  .popupContent{
+    color: black;
+  }
 }
