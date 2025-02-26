@@ -41,10 +41,12 @@ export default function BookingCalendar() {
               d.getMonth() === date.getMonth() &&
               d.getDate() === date.getDate()
           );
+          
 
           //console.log(`the date: ${date.toDateString()}, is it booked: ${isBooked}`);
           return isBooked ? "booked" : "";
         }}
+        value={new Date(new Date().getTime() + 8 * 60 * 60 * 1000)}
       />
     </section>
   );
