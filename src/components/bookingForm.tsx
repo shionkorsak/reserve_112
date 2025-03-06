@@ -114,9 +114,11 @@ export default function BookingForm() {
         <input 
           type="date" 
           name="date" 
-          value={formData.date} 
-          min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
+          value={formData.date || ""}
+          min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} 
           onChange={(e) => {
+            if (!e.target.value) return; 
+
             const selectedDate = new Date(e.target.value);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -127,10 +129,12 @@ export default function BookingForm() {
               handleChange(e);
             } else {
               alert("Same-day bookings are not allowed. Please select a later date.");
+              e.target.value = "";
             }
           }} 
           required 
         />
+
 
         <label>Time</label>
         <div className={styles.timeContainer}>
