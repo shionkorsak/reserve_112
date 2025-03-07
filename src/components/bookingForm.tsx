@@ -70,6 +70,17 @@ export default function BookingForm() {
   
   const handleOpenPopup = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const selectedDate = new Date(formData.date);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const tmr =  new Date(today);
+    tmr.setDate(today.getDate()+1);
+
+    if(!formData.date || selectedDate < tmr){
+      alert("Same-day bookings are not allowed. Please select a later date.");
+      return;
+    }
     setShowPopup(true);
   };
 
@@ -117,23 +128,11 @@ export default function BookingForm() {
           value={formData.date || ""}
           min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} 
           onChange={(e) => {
-            if (!e.target.value) return; 
-
-            const selectedDate = new Date(e.target.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-
-            if (selectedDate >= tomorrow) {
-              handleChange(e);
-            } else {
-              alert("Same-day bookings are not allowed. Please select a later date.");
-              e.target.value = "";
-            }
+            handleChange(e);
           }} 
           required 
         />
+
 
 
         <label>Time</label>
