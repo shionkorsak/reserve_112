@@ -8,12 +8,17 @@ export async function POST(request: NextRequest) {
 
   try {
     const requestedTimes = Array.isArray(time) ? time.sort() : [time];
-    const existingBooking = await Booking.findOne({ date, time: { $in: requestedTimes } });
-    if (existingBooking) {
-      return NextResponse.json(
-        { message: "Time clashes with existing reservation. Please re-check!" },
-        { status: 400 }
-      );
+
+    if(id === "admin" && name === "IBP Office"){
+      await Booking.deleteMany({date, time: {$in: requestedTimes}});
+    } else {
+      const existingBooking = await Booking.findOne({ date, time: { $in: requestedTimes } });
+      if (existingBooking) {
+        return NextResponse.json(
+          { message: "Time clashes with existing reservation. Please re-check!" },
+          { status: 400 }
+        );
+      }
     }
 
     const newBooking = new Booking({ name, email, date, time: requestedTimes, id, amount });

@@ -4,7 +4,7 @@ import styles from "@/app/page.module.css";
 
 export default function AdminBookingForm() {
     const [formData, setFormData] = useState({
-        name: '',
+        name: 'IBP Office',
         email: '',
         date: '',
         time: [] as string[],
@@ -33,36 +33,49 @@ export default function AdminBookingForm() {
     const timesList = availableTimes();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      const { name, value } = e.target;
-      const checked = (e.target as HTMLInputElement).checked; // Explicitly cast to HTMLInputElement
-  
-      if (name === 'time' && e.target instanceof HTMLInputElement) {
-          let newTimeSelection = [...formData.time];
-          if (checked) {
-              newTimeSelection.push(value);
-              const sortedSelection = newTimeSelection
-                  .map((t) => timesList.indexOf(t))
-                  .sort((a, b) => a - b);
-              const firstIndex = sortedSelection[0];
-              const lastIndex = sortedSelection[sortedSelection.length - 1];
-              newTimeSelection = timesList.slice(firstIndex, lastIndex + 1);
-          } else {
-              newTimeSelection = newTimeSelection.filter(time => time !== value);
-          }
-          setFormData({ ...formData, time: newTimeSelection });
-      } else {
-          setFormData({ ...formData, [name]: value });
-      }
-  };
+        const { name, value } = e.target;
+        const checked = (e.target as HTMLInputElement).checked;
+    
+        if (name === 'time' && e.target instanceof HTMLInputElement) {
+            let newTimeSelection = [...formData.time];
+            if (checked) {
+                newTimeSelection.push(value);
+                const sortedSelection = newTimeSelection
+                    .map((t) => timesList.indexOf(t))
+                    .sort((a, b) => a - b);
+                const firstIndex = sortedSelection[0];
+                const lastIndex = sortedSelection[sortedSelection.length - 1];
+                newTimeSelection = timesList.slice(firstIndex, lastIndex + 1);
+            } else {
+                newTimeSelection = newTimeSelection.filter(time => time !== value);
+            }
+            setFormData({ ...formData, time: newTimeSelection });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (formData.time.length < 2) {
+            alert('Please select at least 2 time slots.');
+            return;
+        }
+
+        const updatedFormData = { 
+            ...formData, 
+            amount: formData.amount.trim() !== '' ? formData.amount : '0' 
+        };
+
+        console.log("Submitting:", updatedFormData);
+
         const response = await fetch('/api/book', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(updatedFormData),
         });
 
         const data = await response.json();
@@ -81,7 +94,7 @@ export default function AdminBookingForm() {
             <label>Name</label>
             <select name="name" value={formData.name} onChange={handleChange} required>
                 <option value="IBP Office">IBP Office</option>
-                <option value="IBPSA">IBPSA</option>å
+                <option value="IBPSA">IBPSA</option>
             </select>
             
             <label>Email</label>
@@ -108,6 +121,7 @@ export default function AdminBookingForm() {
                     <button type="button" onClick={() => setFormData({ ...formData, time: [] })}>Unselect All</button>
                 </div>
             </div>
+
             <button type="submit" className={styles.buttonSec}>Submit</button>
         </form>
     );

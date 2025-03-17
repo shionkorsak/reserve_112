@@ -87,6 +87,12 @@ export default function BookingForm() {
   const handleConfirmBooking = async () => {
     if (!isChecked) return;
 
+    if (formData.time.length < 2) {
+      alert('Please select at least 2 time slots.');
+      setShowPopup(false);
+      return;
+    }
+
     const response = await fetch('/api/book', {
       method: 'POST',
       headers: {
@@ -133,8 +139,6 @@ export default function BookingForm() {
           required 
         />
 
-
-
         <label>Time</label>
         <div className={styles.timeContainer}>
           <div className={styles.timeGrid}>
@@ -159,7 +163,7 @@ export default function BookingForm() {
         </div>
 
         <label>Total number of people expected to attend</label>
-        <input type="number" name="amount" value={formData.amount} onChange={handleChange} min="7" required />
+        <input type="number" name="amount" value={formData.amount} onChange={handleChange} min="7" max="30" required />
         <button type="submit" className={styles.buttonSec}>Submit</button>
       </form>
 
