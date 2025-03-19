@@ -68,7 +68,7 @@ export default function BookingForm() {
   const [showPopup, setShowPopup] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   
-  const handleOpenPopup = (e: React.FormEvent) => {
+  const handleOpenPopup = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const selectedDate = new Date(formData.date);
@@ -81,7 +81,32 @@ export default function BookingForm() {
       alert("Same-day bookings are not allowed. Please select a later date.");
       return;
     }
-    setShowPopup(true);
+
+    try {
+      const response = await fetch(
+        `/api/check-bookings?date=${formData.date}&id=${formData.id}`
+      );
+      const data = await response.json();
+
+      if (data.totalBookings >= 2) {
+        alert("No more bookings allowed for this date.");
+        return;
+      }
+
+      if (data.userDailyBookings >= 1) {
+        alert("You have already made a booking today.");
+        return;
+      }
+
+      if (data.userWeeklyBookings >= 2) {
+        alert("You have reached the weekly booking limit.");
+        return;
+      }
+
+      setShowPopup(true);
+    } catch (error) {
+      alert("Error checking booking limits :(");
+    }
   };
 
   const handleConfirmBooking = async () => {
@@ -132,7 +157,7 @@ export default function BookingForm() {
           type="date" 
           name="date" 
           value={formData.date || ""}
-          min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} 
+          min={new Date(Date.now() + 86400000).toISOString().split("T")[0]} //lol im trying to offset the timezone change
           onChange={(e) => {
             handleChange(e);
           }} 

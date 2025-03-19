@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "@/app/page.module.css";
+import { startOfWeek, isAfter, parseISO } from "date-fns";
 
 interface Booking {
   id: string;
@@ -18,8 +19,16 @@ export default function UpcomingBookings() {
     async function fetchBookings() {
       const res = await fetch("/api/bookings");
       const data = await res.json();
-      //console.log("fetched bookings:", data);
-      setBookings(data);
+      
+      const today = new Date();
+      const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }); // Monday as start of the week
+
+      const filteredBookings = data.filter((booking: Booking) =>
+        isAfter(parseISO(booking.date), startOfCurrentWeek) || 
+        booking.date === startOfCurrentWeek.toISOString().split("T")[0]
+      );
+
+      setBookings(filteredBookings);
     }
     fetchBookings();
   }, []);
@@ -35,11 +44,9 @@ export default function UpcomingBookings() {
     return `${months[month]} ${day}, ${year}`;
   };
 
-  const formatearTime = (timeArray: string[]) => {
-    if (timeArray.length > 0){
-      const firstTime = timeArray[0];
-      const lastTime = timeArray[timeArray.length - 1];
-      return `${firstTime} to ${lastTime}`;
+  const formatTime = (timeArray: string[]) => {
+    if (timeArray.length > 0) {
+      return `${timeArray[0]} to ${timeArray[timeArray.length - 1]}`;
     }
     return "";
   };
@@ -49,9 +56,11 @@ export default function UpcomingBookings() {
         {bookings.map((booking) => (
           <li key={booking.id}>
             {booking.name} - {formatDate(booking.date)} <br/> 
-            <code style={{color: "#6395ee"}}> {formatearTime(Array.isArray(booking.time) ? booking.time : [booking.time])}
+            <code style={{color: "#6395ee"}}> 
+              {formatTime(Array.isArray(booking.time) ? booking.time : [booking.time])}
             </code>
           </li>
         ))}
       </ul>
-  );}
+  );
+}
