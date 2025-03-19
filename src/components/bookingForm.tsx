@@ -82,31 +82,28 @@ export default function BookingForm() {
       return;
     }
 
-    try {
-      const response = await fetch(
-        `/api/check-bookings?date=${formData.date}&id=${formData.id}`
-      );
-      const data = await response.json();
+    const response = await fetch(
+      `/api/check-bookings?date=${formData.date}&id=${formData.id}`
+    );
+    const data = await response.json();
 
-      if (data.totalBookings >= 2) {
-        alert("No more bookings allowed for this date.");
-        return;
-      }
-
-      if (data.userDailyBookings >= 1) {
-        alert("You have already made a booking today.");
-        return;
-      }
-
-      if (data.userWeeklyBookings >= 2) {
-        alert("You have reached the weekly booking limit.");
-        return;
-      }
-
-      setShowPopup(true);
-    } catch (error) {
-      alert("Error checking booking limits :(");
+    if (data.totalBookings >= 2) {
+      alert("No more bookings allowed for this date.");
+      return;
     }
+
+    if (data.userDailyBookings >= 1) {
+      alert("You have already made a booking today.");
+      return;
+    }
+
+    if (data.userWeeklyBookings >= 2) {
+      alert("You have reached the weekly booking limit.");
+      return;
+    }
+
+    setShowPopup(true);
+
   };
 
   const handleConfirmBooking = async () => {
