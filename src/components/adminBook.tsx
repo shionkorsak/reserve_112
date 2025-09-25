@@ -12,6 +12,8 @@ export default function AdminBookingForm() {
         id: 'admin',
     });
 
+    const [bookedTimeSlots, setBookedTimeSlots] = useState<string[]>([]);
+
     const availableTimes = () => {
         const times = [];
         let start = 8;
@@ -31,6 +33,35 @@ export default function AdminBookingForm() {
     };
 
     const timesList = availableTimes();
+
+    const fetchBookedTimeSlots = async (selectedDate: string) => {
+        if (!selectedDate) {
+            setBookedTimeSlots([]);
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/bookings");
+            const bookings = await res.json();
+            
+            const dateBookings = bookings.filter((booking: any) => {
+                const bookingDate = new Date(booking.date).toISOString().split('T')[0];
+                return bookingDate === selectedDate;
+            });
+
+            const bookedSlots: string[] = [];
+            dateBookings.forEach((booking: any) => {
+                if (Array.isArray(booking.time)) {
+                    bookedSlots.push(...booking.time);
+                }
+            });
+
+            setBookedTimeSlots(bookedSlots);
+        } catch (error) {
+            console.error("Error fetching booked time slots:", error);
+            setBookedTimeSlots([]);
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -52,6 +83,11 @@ export default function AdminBookingForm() {
             setFormData({ ...formData, time: newTimeSelection });
         } else {
             setFormData({ ...formData, [name]: value });
+            
+            if (name === 'date') {
+                fetchBookedTimeSlots(value);
+                setFormData(prev => ({ ...prev, [name]: value, time: [] }));
+            }
         }
     };
 
@@ -106,18 +142,27 @@ export default function AdminBookingForm() {
             <label>Time</label>
             <div className={styles.timeContainer}>
                 <div className={styles.timeGrid}>
-                    {timesList.map((time, index) => (
-                        <div key={index} className={styles.timeSlot}>
-                            <input
-                                type="checkbox"
-                                name="time"
-                                value={time}
-                                checked={formData.time.includes(time)}
-                                onChange={handleChange}
-                            />
-                            <label>{time}</label>
-                        </div>
-                    ))}
+                    {timesList.map((time, index) => {
+                        const isBooked = bookedTimeSlots.includes(time);
+                        
+                        return (
+                            <div key={index} className={styles.timeSlot}>
+                                <input
+                                    type="checkbox"
+                                    name="time"
+                                    value={time}
+                                    checked={formData.time.includes(time)}
+                                    onChange={handleChange}
+                                />
+                                <label style={{ 
+                                    color: isBooked ? '#ff6b6b' : 'inherit',
+                                    fontWeight: isBooked ? 'bold' : 'normal'
+                                }}>
+                                    {time} {isBooked && '(Existing Booking)'}
+                                </label>
+                            </div>
+                        );
+                    })}
                     <button type="button" onClick={() => setFormData({ ...formData, time: [] })}>Unselect All</button>
                 </div>
             </div>

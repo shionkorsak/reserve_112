@@ -34,9 +34,10 @@ export default function WeeklySchedule() {
 
       const formattedEvents = data.map((booking) => {
         const startTime = moment(`${booking.date} ${booking.time[0]}`, "YYYY-MM-DD HH:mm").toDate();
-        const endTime = moment(`${booking.date} ${booking.time[booking.time.length - 1]}`, "YYYY-MM-DD HH:mm")
-          .add(30, "minutes") 
-          .toDate();
+        const lastTimeSlot = booking.time[booking.time.length - 1];
+        
+        const endTimeString = lastTimeSlot > "22:00" ? "22:00" : lastTimeSlot;
+        const endTime = moment(`${booking.date} ${endTimeString}`, "YYYY-MM-DD HH:mm").toDate();
       
         return {
           id: booking.id,

@@ -15,6 +15,29 @@ export default function BookingForm() {
     id: '',
   });
 
+  const [bookedTimeSlots, setBookedTimeSlots] = useState<string[]>([]);
+  const [existingBookings, setExistingBookings] = useState<any[]>([]);
+
+  const canStartBookingAt = (timeSlot: string) => {
+    if (!bookedTimeSlots.includes(timeSlot)) {
+      return true;
+    }
+
+    for (const booking of existingBookings) {
+      if (Array.isArray(booking.time) && booking.time.length > 0) {
+        const sortedTimes = booking.time.sort();
+        const firstSlot = sortedTimes[0];
+        const lastSlot = sortedTimes[sortedTimes.length - 1];
+        
+        if (timeSlot === firstSlot || timeSlot === lastSlot) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
   const availableTimes = () => {
     const times = [];
     let start = 8;
@@ -34,6 +57,37 @@ export default function BookingForm() {
   };
 
   const timesList = availableTimes();
+
+  const fetchBookedTimeSlots = async (selectedDate: string) => {
+    if (!selectedDate) {
+      setBookedTimeSlots([]);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/bookings");
+      const bookings = await res.json();
+      
+      const dateBookings = bookings.filter((booking: any) => {
+        const bookingDate = new Date(booking.date).toISOString().split('T')[0];
+        return bookingDate === selectedDate;
+      });
+
+      setExistingBookings(dateBookings);
+
+      const unavailableSlots: string[] = [];
+      dateBookings.forEach((booking: any) => {
+        if (Array.isArray(booking.time) && booking.time.length > 0) {
+          unavailableSlots.push(...booking.time);
+        }
+      });
+
+      setBookedTimeSlots(unavailableSlots);
+    } catch (error) {
+      console.error("Error fetching booked time slots:", error);
+      setBookedTimeSlots([]);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
@@ -62,6 +116,11 @@ export default function BookingForm() {
       setFormData({ ...formData, time: newTimeSelection });
     } else {
       setFormData({ ...formData, [name]: value });
+      
+      if (name === 'date') {
+        fetchBookedTimeSlots(value);
+        setFormData(prev => ({ ...prev, [name]: value, time: [] }));
+      }
     }
   };
 
@@ -164,19 +223,35 @@ export default function BookingForm() {
         <label>Time</label>
         <div className={styles.timeContainer}>
           <div className={styles.timeGrid}>
-            {timesList.map((time, index) => (
-              <div key={index} className={styles.timeSlot}>
-                <input
-                  type="checkbox"
-                  name="time"
-                  value={time}
-                  checked={formData.time.includes(time)}
-                  onChange={handleChange}
-                  disabled={formData.time.length >= 9 && !formData.time.includes(time)} 
-                />
-                <label>{time}</label>
-              </div>
-            ))}
+            {timesList.map((time, index) => {
+              const isBooked = bookedTimeSlots.includes(time);
+              const canStartHere = canStartBookingAt(time);
+              const isMaxLength = formData.time.length >= 9 && !formData.time.includes(time);
+              
+              const isDisabled = isMaxLength || (isBooked && !canStartHere);
+              
+              const isEdgeSlot = isBooked && canStartHere;
+              
+              return (
+                <div key={index} className={styles.timeSlot}>
+                  <input
+                    type="checkbox"
+                    name="time"
+                    value={time}
+                    checked={formData.time.includes(time)}
+                    onChange={handleChange}
+                    disabled={isDisabled}
+                  />
+                  <label style={{ 
+                    color: isDisabled ? '#999' : (isEdgeSlot ? '#ff8c00' : 'inherit'),
+                    opacity: isDisabled ? 0.5 : 1,
+                    fontWeight: isEdgeSlot ? 'bold' : 'normal'
+                  }}>
+                    {time} {isBooked && !canStartHere && '(Booked)'} {isEdgeSlot && '(Adjacent slot)'}
+                  </label>
+                </div>
+              );
+            })}
 
             <button type="button" onClick={() => setFormData({ ...formData, time: [] })}>
               Unselect All

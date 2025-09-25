@@ -46,7 +46,14 @@ export default function UpcomingBookings() {
 
   const formatTime = (timeArray: string[]) => {
     if (timeArray.length > 0) {
-      return `${timeArray[0]} to ${timeArray[timeArray.length - 1]}`;
+      const startTime = timeArray[0];
+      const endTime = timeArray[timeArray.length - 1];
+      
+      if (endTime > "22:00") {
+        return `${startTime} to 22:00`;
+      }
+      
+      return `${startTime} to ${endTime}`;
     }
     return "";
   };

@@ -12,12 +12,26 @@ export async function POST(request: NextRequest) {
     if(id === "admin" && name === "IBP Office"){
       await Booking.deleteMany({date, time: {$in: requestedTimes}});
     } else {
-      const existingBooking = await Booking.findOne({ date, time: { $in: requestedTimes } });
-      if (existingBooking) {
-        return NextResponse.json(
-          { message: "Time clashes with existing reservation. Please re-check!" },
-          { status: 400 }
-        );
+      const existingBookings = await Booking.find({ date, time: { $in: requestedTimes } });
+      
+      for (const existingBooking of existingBookings) {
+        const existingTimes = existingBooking.time.sort();
+        const newTimes = requestedTimes;
+        
+        const hasRealOverlap = newTimes.some(newTime => {
+          const isFirstSlotOfExisting = newTime === existingTimes[0];
+          const isLastSlotOfExisting = newTime === existingTimes[existingTimes.length - 1];
+          const isInExisting = existingTimes.includes(newTime);
+          
+          return isInExisting && !isFirstSlotOfExisting && !isLastSlotOfExisting;
+        });
+        
+        if (hasRealOverlap) {
+          return NextResponse.json(
+            { message: "Time clashes with existing reservation. Please re-check!" },
+            { status: 400 }
+          );
+        }
       }
     }
 
