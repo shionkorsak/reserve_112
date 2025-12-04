@@ -3,6 +3,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from "@/app/page.module.css";
 
+interface Booking {
+  date: string;
+  time: string[];
+}
+
 export default function BookingForm() {
   const router = useRouter();
 
@@ -16,7 +21,7 @@ export default function BookingForm() {
   });
 
   const [bookedTimeSlots, setBookedTimeSlots] = useState<string[]>([]);
-  const [existingBookings, setExistingBookings] = useState<any[]>([]);
+  const [existingBookings, setExistingBookings] = useState<Booking[]>([]);
 
   const canStartBookingAt = (timeSlot: string) => {
     if (!bookedTimeSlots.includes(timeSlot)) {
@@ -68,7 +73,7 @@ export default function BookingForm() {
       const res = await fetch("/api/bookings");
       const bookings = await res.json();
       
-      const dateBookings = bookings.filter((booking: any) => {
+      const dateBookings = bookings.filter((booking: Booking) => {
         const bookingDate = new Date(booking.date).toISOString().split('T')[0];
         return bookingDate === selectedDate;
       });
@@ -76,7 +81,7 @@ export default function BookingForm() {
       setExistingBookings(dateBookings);
 
       const unavailableSlots: string[] = [];
-      dateBookings.forEach((booking: any) => {
+      dateBookings.forEach((booking: Booking) => {
         if (Array.isArray(booking.time) && booking.time.length > 0) {
           unavailableSlots.push(...booking.time);
         }

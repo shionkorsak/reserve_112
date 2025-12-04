@@ -1,4 +1,4 @@
-//import Image from "next/image";
+import Image from "next/image";
 import styles from "@/app/page.module.css";
 //import Link from "next/link";
 
@@ -12,7 +12,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                <img
+                <Image
                     src="/instagram.svg"
                     alt="Instagram icon"
                     width={16}
@@ -25,7 +25,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                <img
+                <Image
                     src="/at.svg"
                     alt="Window icon"
                     width={17}

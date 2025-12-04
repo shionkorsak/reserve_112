@@ -2,6 +2,11 @@
 import { useState } from 'react';
 import styles from "@/app/page.module.css";
 
+interface Booking {
+    date: string;
+    time: string[];
+}
+
 export default function AdminBookingForm() {
     const [formData, setFormData] = useState({
         name: 'IBP Office',
@@ -44,13 +49,13 @@ export default function AdminBookingForm() {
             const res = await fetch("/api/bookings");
             const bookings = await res.json();
             
-            const dateBookings = bookings.filter((booking: any) => {
+            const dateBookings = bookings.filter((booking: Booking) => {
                 const bookingDate = new Date(booking.date).toISOString().split('T')[0];
                 return bookingDate === selectedDate;
             });
 
             const bookedSlots: string[] = [];
-            dateBookings.forEach((booking: any) => {
+            dateBookings.forEach((booking: Booking) => {
                 if (Array.isArray(booking.time)) {
                     bookedSlots.push(...booking.time);
                 }
